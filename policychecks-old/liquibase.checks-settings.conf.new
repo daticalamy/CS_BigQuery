@@ -1,0 +1,129 @@
+## Policy Checks Settings File
+########## IMPORTANT: NEVER EDIT THIS KEY
+## id: 'some-l0ng-uni4ue-id3nt1fier-c0d3'
+
+########## ALWAYS EDITABLE KEY VALUES and PARAMETERS
+##  severity: <can be set to 0, 1, 2, 3, 4>
+##  enabled: <can be "true" or "false">
+
+########## EDITABLE PARAMETERS
+##  Standard value options:
+##    ALLOWED_LIST: <comma-separated list>
+##    ATTRIBUTE: <ID, AUTHOR, CONTEXT, CONTEXT_FILTER, LABELS, DBMS, RUN_ON_CHANGE, RUN_ALWAYS, FAIL_ON_ERROR, ON_VALIDATION_FAIL, RUN_IN_TRANSACTION, LOGICAL_FILE_PATH, OBJECT_QUOTING_STRATEGY, CREATED, RUN_ORDER, IGNORE, RUN_WITH, RUN_WITH_SPOOL_FILE>
+##    CASE_SENSITIVE: <true, false>
+##    CHANGE_TYPE_LIST: <comma-separated list; valid values: RENAMEVIEW, DROPFOREIGNKEYCONSTRAINT, DROPTABLE, DROPUNIQUECONSTRAINT, DROPCOLLECTION, SQLFILE, MERGECOLUMNS, RENAMETRIGGER, MONGOFILE, TAGDATABASE, ADDNOTNULLCONSTRAINT, INSERTMANY, CREATECOLLECTION, SETCOLUMNREMARKS, DISABLECHECKCONSTRAINT, ADMINCOMMAND, ADDUNIQUECONSTRAINT, CREATEFUNCTION, CREATETRIGGER, DROPINDEX, DROPSEQUENCE, CREATESEQUENCE, DROPPACKAGE, OUTPUT, STOP, DROPNOTNULLCONSTRAINT, ENABLETRIGGER, SETTABLEREMARKS, DROPTRIGGER, DROPCOLUMN, RUNCOMMAND, DROPPROCEDURE, SQL, EXECUTECOMMAND, ADDCHECKCONSTRAINT, CREATEVIEW, DROPFUNCTION, CREATETABLE, DROPPACKAGEBODY, MONGO, ENABLECHECKCONSTRAINT, LOADUPDATEDATA, CUSTOMCHANGE, DROPSYNONYM, INSERT, DROPDEFAULTVALUE, ADDCOLUMN, CREATEPROCEDURE, LOADDATA, INSERTONE, CREATEINDEX, DROPALLFOREIGNKEYCONSTRAINTS, CREATEPACKAGEBODY, CREATESYNONYM, DISABLETRIGGER, DELETE, RENAMESEQUENCE, ADDDEFAULTVALUE, DROPPRIMARYKEY, UPDATE, MODIFYDATATYPE, ADDFOREIGNKEYCONSTRAINT, DROPCHECKCONSTRAINT, EMPTY, MARKUNUSED, ALTERSEQUENCE, ADDAUTOINCREMENT, RENAMECOLUMN, ADDLOOKUPTABLE, DROPVIEW, CREATEPACKAGE, ADDPRIMARYKEY, RENAMETABLE>
+##    COLUMN_NAME: <non-empty string>
+##    CONSTRAINT: <NOT_NULL, UNIQUE, PRIMARYKEY, FOREIGNKEY, DEFAULT>
+##    CONSTRAINT_OPERATOR: <STARTS_WITH, ENDS_WITH, CONTAINS, REGEXP, ALL>
+##    DEFAULTS_FILENAME: <valid filename>
+##    EXCEPTIONS_LIST: <comma-separated list>
+##    FILETYPE: <sql, xml, json, yml, yaml>
+##    JDBC_URL: <non-empty string>
+##    LOGIC_CONDITIONAL: <non-empty string>
+##    LOOKAHEAD_MESSAGE: <non-empty string>
+##    LOOKAHEAD_SEARCH_STRING: <a string, or a valid regular expression>
+##    LOOKBEHIND_MESSAGE: <non-empty string>
+##    LOOKBEHIND_SEARCH_STRING: <a string, or a valid regular expression>
+##    MAX_COLUMNS: <positive numeric value>
+##    MAX_ROWS: <positive numeric value>
+##    MESSAGE: <non-empty string>
+##    NEGATIVE_LOOKAHEAD_MESSAGE: <non-empty string>
+##    NEGATIVE_LOOKBEHIND_MESSAGE: <non-empty string>
+##    OBJECT_TYPES: <TABLE, COLUMN, SEQUENCE, INDEX, SCHEMA>
+##    OPERATOR: <STARTS_WITH, ENDS_WITH, CONTAINS, REGEXP, EQUALS>
+##    PASSWORD: <non-empty string>
+##    PATH_FILTER_REGEX: <RegexGetter>
+##    PATTERN_A: <a string, or a valid regular expression>
+##    PATTERN_B: <a string, or a valid regular expression>
+##    PRIMARY_SEARCH_STRING: <a string, or a valid regular expression>
+##    PRIVILEGE_LIST: <comma-separated list of valid database privileges>
+##    PROJECT_DIR: <path to a directory>
+##    REQUIRES_SNAPSHOT: <true, false>
+##    RUN_IN_TRANSACTION_VALUE: <true,false>
+##    SAMPLE_CHANGELOG_NAME: <valid filename>
+##    SCRIPT_ARGS: <a list of arguments, i.e key1="value1", key2="value2">
+##    SCRIPT_DESCRIPTION: <string>
+##    SCRIPT_MESSAGE: <string>
+##    SCRIPT_PATH: <a relative file path>
+##    SCRIPT_SCOPE: <changelog, database>
+##    SCRIPT_TYPE: <PYTHON>
+##    SEARCH_STRING: <a string, or a valid regular expression>
+##    SPLIT_STATEMENTS: <true, false>
+##    STRIP_COMMENTS: <true, false>
+##    TABLE_NAME: <string>
+##    USERNAME: <non-empty string>
+
+fileCreated: 2024-10-24T01:01:11.144Z
+fileModified: 2024-10-24T03:05:53.961Z
+rules:
+- description: This check scans SQL for the presence of specific patterns in specified
+    changelog paths, and warns the user when they are found.
+  enabled: true
+  id: 'f451fd7d-592c-34d1-ab45-89aa09aee78d'
+  name: Check for specific patterns in sql
+  parameters:
+  - parameter: SEARCH_STRING
+    value: (?is)(?=.*\b(create(|\s*or\s*replace)\s*table)\b)(?!.*\b(labels.*pii)\b).*
+  - parameter: MESSAGE
+    value: Error! CREATE TABLE statement must have a pii label.
+  - parameter: STRIP_COMMENTS
+    value: true
+  - parameter: PATH_FILTER_REGEX
+    value: null
+  - parameter: SPLIT_STATEMENTS
+    value: false
+  parentRuleId: '6fe07581-c90d-3add-9057-1547a1439727'
+  severity: '1'
+  shortName: CreateTableMustHavePiiLabel
+- description: This check scans SQL for the presence of specific patterns in specified
+    changelog paths, and warns the user when they are found.
+  enabled: true
+  id: 'd990ae8f-f497-37d7-ba15-f3c1ff269ceb'
+  name: Check for specific patterns in sql
+  parameters:
+  - parameter: SEARCH_STRING
+    value: (?is)(create(|\s*or\s*replace)\s*table.*labels.*pii)
+  - parameter: MESSAGE
+    value: A match for regular expression <SEARCH_STRING> was detected in Changeset
+      <CHANGESET> in changelog path <PATH_FILTER_REGEX>.
+  - parameter: STRIP_COMMENTS
+    value: true
+  - parameter: PATH_FILTER_REGEX
+    value: null
+  - parameter: SPLIT_STATEMENTS
+    value: false
+  parentRuleId: '6fe07581-c90d-3add-9057-1547a1439727'
+  severity: '0'
+  shortName: CreateTableHasPiiLabel
+- description: This check scans SQL for the presence of specific patterns in specified
+    changelog paths, and warns the user when they are found.
+  enabled: true
+  id: 'cb47735e-3b9a-37ee-b22d-e3b34671d8d6'
+  name: Check for specific patterns in sql
+  parameters:
+  - parameter: SEARCH_STRING
+    value: (?is)(?=.*\b(|\s*or\s*replace)\s*view.*_s\b)(?=.*\b(|\s*or\s*replace)\s*view.*[^_s]\s*\(\b).*
+  - parameter: MESSAGE
+    value: CREATE VIEWS exist for pii and non pii.
+  - parameter: STRIP_COMMENTS
+    value: true
+  - parameter: PATH_FILTER_REGEX
+    value: null
+  - parameter: SPLIT_STATEMENTS
+    value: false
+  parentRuleId: '6fe07581-c90d-3add-9057-1547a1439727'
+  severity: '0'
+  shortName: CreatePiiViewAndNonPiiView
+- description: This check triggers when the logic conditional evaluates to true
+  enabled: true
+  id: 'df0b9bc1-ce4b-3b0b-95bd-6f8f6897d449'
+  name: Chained checks template
+  parameters:
+  - parameter: LOGIC_CONDITIONAL
+    value: '!CreatePiiViewAndNonPiiView && CreateTableHasPiiLabel'
+  - parameter: MESSAGE
+    value: Error! If Create Table has a Pii Label, there must be both a Pii and NonPii View.
+  parentRuleId: 'b3fc0c29-7070-345d-acdd-761e28e99766'
+  severity: '1'
+  shortName: CreateTableWithPiiLabelMustHavePiiAndNonPiiViews
+version: '1.1'
