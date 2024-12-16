@@ -18,12 +18,13 @@ GITHUB_API_URL = "https://api.github.com"
 # Replace with your GitHub repository details
 REPO_OWNER = "daticalamy"  # GitHub username or organization
 REPO_NAME = "CS_BigQuery"  # Repository name
-#BRANCH = "main"  # Branch name, usually 'main' or 'master'
+#BRANCH = "main"  # Branch name, usually 'main'
 BRANCH = os.environ.get("CURRENT_BRANCH")
 print(f"CURRENT_BRANCH = {BRANCH}")
 
-# GitHub authentication token (optional but recommended for higher rate limits)
-GITHUB_TOKEN = "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"  # Optional, if you have a GitHub token
+# GitHub authentication token - Required for private repos
+#GITHUB_TOKEN = "github_pat_11....." 
+GITHUB_TOKEN = os.environ.get("PYTHON_CHECKS_GITHUB_TOKEN")
 
 ###
 ### Retrieve log handler
